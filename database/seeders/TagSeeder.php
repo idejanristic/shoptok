@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Brand;
+use App\Models\Tag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class BrandSeeder extends Seeder
+class TagSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Brand::factory()->count(count: 20)->create();
+        Tag::factory()->count(count: 15)->create();
     }
 }
