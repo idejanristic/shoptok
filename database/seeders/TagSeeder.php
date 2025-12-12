@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Domain\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class TagSeeder extends Seeder

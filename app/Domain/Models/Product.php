@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Domain\Models;
 
+use Database\Factories\ProductFactory;
 use Dom\ProcessingInstruction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,15 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Models\Product>
+     */
+    protected static function newFactory(): ProductFactory
+    {
+        return ProductFactory::new();
+    }
     /**
      * The attributes that are mass assignable.
      *
