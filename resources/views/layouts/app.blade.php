@@ -12,7 +12,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-light">
+<body class="bg-body-tertiary">
     @include('partials.header')
 
     <header class="mb-4 bg-white shadow-sm">

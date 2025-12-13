@@ -57,6 +57,8 @@ class ProductController extends Controller
             ])
         );
 
+        sleep(3);
+
         return response()
             ->json(data: $products);
     }

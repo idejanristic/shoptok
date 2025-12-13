@@ -2,8 +2,10 @@
     <div class="sort-area">
         <products-sorter-component />
     </div>
-
-    <products-list-component :products="products" />
+    <div class="position-relative">
+        <loader-overlay :show="loading" :size="44" color="red" />
+        <products-list-component :products="products" />
+    </div>
 
     <div v-if="!loading" class="d-flex justify-content-center mt-3">
         <pagination-component :pagination="pagination" @changePage="fetchPage" />
@@ -33,6 +35,11 @@ const fetchPage = async (page = 1) => {
             per_page: response.data.per_page,
             total: response.data.total
         };
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
 
     } catch (error) {
         console.error('Failed to fetch products', error);
