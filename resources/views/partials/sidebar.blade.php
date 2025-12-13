@@ -39,7 +39,15 @@
                         <label
                             class="form-check-label"
                             for="brand_{{ $brand->id }}"
-                        >{{ $brand->name }}</label>
+                        >
+                            {{ $brand->name }}
+                            <span
+                                class="badge"
+                                style="color: red;"
+                            >
+                                {{ $brand->products_count }}
+                            </span>
+                        </label>
                     </div>
                 @endforeach
 
@@ -53,9 +61,13 @@
         </div>
         <div class="filter-body">
             @foreach ($tags as $tag)
-                <span class="badge text-dark mb-2 ml-2 rounded border bg-white px-3 py-2 text-lg">
+                <button class="text-dark position-relative mb-2 ml-2 rounded border bg-white px-3 py-2">
                     {{ $tag->name }}
-                </span>
+
+                    <span class="position-absolute translate-middle badge rounded-pill bg-danger start-10 top-0 z-10">
+                        {{ $tag->products_count }}
+                    </span>
+                </button>
             @endforeach
         </div>
     </div>

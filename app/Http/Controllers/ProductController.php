@@ -32,8 +32,8 @@ class ProductController extends Controller
             view: 'pages.products.index',
             data: [
                 'products' => $products,
-                'total' => 10,
-                'shops' => 3
+                'total' => $products->total(),
+                'shops' => 0
             ]
         );
     }

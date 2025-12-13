@@ -40,7 +40,10 @@
                 </div>
 
                 <!-- Main Content -->
-                <div class="main-content">
+                <div
+                    class="main-content"
+                    style="width: 100%;"
+                >
                     @yield('page_content')
                 </div>
             </div>
