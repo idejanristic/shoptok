@@ -47,7 +47,7 @@ class ProductController extends Controller
         $products = $productRepository->getProducts(
             pageDto: PageDto::apply(
                 data: [
-                    'perPage' => 40,
+                    'perPage' => $request->perPage ?? 40,
                     'page' =>  $request->page ?? 1
                 ]
             ),
@@ -56,8 +56,6 @@ class ProductController extends Controller
                 'sortDir' => 'desc'
             ])
         );
-
-        sleep(3);
 
         return response()
             ->json(data: $products);

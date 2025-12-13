@@ -1,7 +1,8 @@
 <template>
     <div class="sort-area">
-        <products-sorter-component />
+        <products-sorter-component @change="reFetchData" />
     </div>
+
     <div class="position-relative">
         <loader-overlay :show="loading" :size="44" color="red" />
         <products-list-component :products="products" />
@@ -18,14 +19,27 @@ import { ref, onMounted } from 'vue';
 const products = ref([]);
 const loading = ref(true);
 const pagination = ref(null);
+const currentPage = ref(1);
 
 
-const fetchPage = async (page = 1) => {
+const fetchPage = async (page = 1, perPage = 0, sortBy = '') => {
 
     loading.value = true;
+    currentPage.value = page;
+
+    var queryString = `page=${page}`;
+
+    if (perPage > 0) {
+        queryString += `&perPage=${perPage}`
+    }
+
+    if (sortBy) {
+        queryString += `&sortBy=${sortBy}`
+    }
 
     try {
-        const response = await axios.get(`/products/ajax?page=${page}`);
+        const response = await axios.get(`/products/ajax?${queryString}`);
+
         loading.value = false;
         products.value = response.data.data;
 
@@ -47,6 +61,10 @@ const fetchPage = async (page = 1) => {
         loading.value = false;
     }
 };
+
+const reFetchData = (data) => {
+    fetchPage(currentPage.value, data.perPage, data.sortBy);
+}
 
 onMounted(() => {
     fetchPage();

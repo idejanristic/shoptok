@@ -35,9 +35,10 @@ import { ref, watch } from 'vue';
 const perPageOptions = [
     { value: 40, label: '40' },
     { value: 32, label: '32' },
-    { value: 25, label: '24' },
-    { value: 10, label: '16' },
-    { value: 5, label: '8' },
+    { value: 24, label: '24' },
+    { value: 16, label: '16' },
+    { value: 8, label: '8' },
+    { value: 4, label: '4' },
 ];
 
 const perPage = ref(32);
