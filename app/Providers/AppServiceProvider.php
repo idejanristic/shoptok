@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Laravel\Telescope\TelescopeServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
         DB::prohibitDestructiveCommands(
             prohibit: config(key: 'app.env') === 'production'
         );
+
+        Paginator::useBootstrapFive();
     }
 }

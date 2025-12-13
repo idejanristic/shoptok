@@ -3,10 +3,22 @@
 namespace App\Domain\Repositories;
 
 use App\Domain\Models\Tag;
+use Illuminate\Database\Eloquent\Collection;
 
 class TagRepository
 {
+    /**
+     * @return Collection<int, Tag>
+     */
+    public static function all(): Collection
+    {
+        return self::getTagRelationQuery()->get();
+    }
 
+    /**
+     * @param array $tags
+     * @return Tag[]
+     */
     public function findOrCreateByName(array $tags): array
     {
         if (empty($tags)) {
@@ -28,6 +40,10 @@ class TagRepository
         return $createdTags;
     }
 
+    /**
+     * @param string $name
+     * @return Tag
+     */
     private function findOrCreate(string $name): Tag
     {
         $tag = Tag::where(column: 'name', operator: $name)->first();
@@ -41,5 +57,16 @@ class TagRepository
         }
 
         return $tag;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder<Tag>
+     */
+    private static function getTagRelationQuery()
+    {
+        return Tag::query()
+            ->withCount(relations: [
+                'products'
+            ]);
     }
 }
