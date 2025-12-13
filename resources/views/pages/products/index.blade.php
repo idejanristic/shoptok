@@ -21,6 +21,6 @@
 
 @section('page_content')
     <div id="app">
-        <products-content />
+        <products-content-component />
     </div>
 @endsection

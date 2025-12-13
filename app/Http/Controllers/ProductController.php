@@ -7,6 +7,7 @@ use App\Domain\Dtos\SortDto;
 use App\Domain\Repositories\ProductRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -36,5 +37,27 @@ class ProductController extends Controller
                 'shops' => 0
             ]
         );
+    }
+
+
+    public function ajax(
+        Request $request,
+        ProductRepository $productRepository
+    ): JsonResponse {
+        $products = $productRepository->getProducts(
+            pageDto: PageDto::apply(
+                data: [
+                    'perPage' => 40,
+                    'page' =>  $request->page ?? 1
+                ]
+            ),
+            sortDto: SortDto::apply(data: [
+                'sortBy' => 'created_at',
+                'sortDir' => 'desc'
+            ])
+        );
+
+        return response()
+            ->json(data: $products);
     }
 }
