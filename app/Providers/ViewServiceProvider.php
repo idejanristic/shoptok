@@ -23,12 +23,12 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer(
-            views: 'partials.sidebar',
+            views: 'layouts.*',
             callback: TagsComposer::class
         );
 
         View::composer(
-            views: 'partials.sidebar',
+            views: 'layouts.*',
             callback: BrandsComposer::class
         );
     }
