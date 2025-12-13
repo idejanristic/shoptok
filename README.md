@@ -11,8 +11,8 @@ This is a web application for a job competition.
 3. Create `.env` file by copying the `.env.example`. You may use the command to do that `cp .env.example .env`
 4. Update the database name and credentials in `.env` file
 5. Run the command `sail up -d` (consider adding this to your alias: `alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'`)
-6. Run the command `sail artisan migrate`
 7. Run the command `sail artisan key:generate`
+6. Run the command `sail artisan migrate`
 8. Link storage directory: `sail artisan storage:link`
 9. Run the command `sail npm install`
 10. Run the command `sail npm run dev`
