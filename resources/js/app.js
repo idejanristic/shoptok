@@ -52,3 +52,18 @@ sidebarApp.component("brand-filter-component", BrandFilterComponent);
 sidebarApp.component("tag-filter-component", TagFilterComponent);
 
 sidebarApp.use(pinia).mount("#sidebar-app");
+
+const sidebarMobApp = createApp({
+    setup() {
+        const filter = useFilterStore();
+
+        return {
+            filter,
+        };
+    },
+});
+
+sidebarMobApp.component("brand-filter-component", BrandFilterComponent);
+sidebarMobApp.component("tag-filter-component", TagFilterComponent);
+
+sidebarMobApp.use(pinia).mount("#sidebar-mob-app");

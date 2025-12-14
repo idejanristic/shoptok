@@ -56,7 +56,10 @@
                     data-bs-dismiss="offcanvas"
                 ></button>
             </div>
-            <div class="offcanvas-body">
+            <div
+                class="offcanvas-body"
+                id="sidebar-mob-app"
+            >
                 @include('partials.sidebar')
             </div>
         </div>
