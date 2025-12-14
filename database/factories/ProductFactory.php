@@ -34,7 +34,7 @@ class ProductFactory extends Factory
                 $this->faker->numberBetween(int1: 1, int2: 70) :
                 null,
 
-            'image' => $this->faker->imageUrl(width: 600, height: 600, category: 'product', randomize: true),
+            'image' => 'https://placehold.net/400x400.png',
 
             'link' => $this->faker->url(),
 

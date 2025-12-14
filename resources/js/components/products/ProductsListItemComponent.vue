@@ -22,6 +22,7 @@
             </div>
 
             <!-- Product info -->
+            <p v-if="product.brand" class="mb-1"><b>{{ product.brand.name }}</b></p>
             <p class="text-multiline-ellipsis">{{ product.name }}</p>
             <b>{{ product.price }} €</b>
         </div>

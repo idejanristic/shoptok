@@ -30,7 +30,7 @@ return new class extends Migration
                     ->nullOnDelete();
 
                 $table->decimal(column: 'price', total: 10, places: 2);
-                $table->string(column: 'discount')->nullable();
+                $table->integer(column: 'discount')->nullable();
                 $table->text(column: 'image')->nullable();
                 $table->text(column: 'link')->nullable();
                 $table->timestamps();
