@@ -3,7 +3,7 @@
         <!-- Per page -->
         <div class="col-3 col-md-2">
             <div class="form-floating">
-                <select class="form-select" id="perPage" v-model="perPage">
+                <select class="form-select" id="perPage" v-model="localPerPage">
                     <option v-for="option in perPageOptions" :key="option.value" :value="option.value">
                         {{ option.label }}
                     </option>
@@ -17,7 +17,7 @@
         <!-- Sort by -->
         <div class="col-5 col-md-3">
             <div class="form-floating">
-                <select class="form-select" id="sortBy" v-model="sortBy">
+                <select class="form-select" id="sortBy" v-model="localSortBy">
                     <option v-for="option in sortOptions" :key="option.value" :value="option.value">
                         {{ option.label }}
                     </option>
@@ -31,6 +31,17 @@
 <script setup>
 import { ref, watch } from 'vue';
 
+const props = defineProps({
+    perPage: {
+        type: Number,
+        required: true,
+    },
+    sortBy: {
+        type: String,
+        required: true,
+    },
+});
+
 /* Per page */
 const perPageOptions = [
     { value: 40, label: '40' },
@@ -41,8 +52,6 @@ const perPageOptions = [
     { value: 4, label: '4' },
 ];
 
-const perPage = ref(32);
-
 /* Sort */
 const sortOptions = [
     { value: 'minPrice', label: 'Cena (najprej najnižja)' },
@@ -52,15 +61,25 @@ const sortOptions = [
     { value: 'brand', label: 'Ime izdelka (A-Z)' },
 ];
 
-const sortBy = ref('minPrice');
+const localPerPage = ref(props.perPage);
+const localSortBy = ref(props.sortBy);
 
+watch(
+    () => props.perPage,
+    (val) => localPerPage.value = val
+);
+
+watch(
+    () => props.sortBy,
+    (val) => localSortBy.value = val
+);
 
 const emit = defineEmits(['change']);
 
-watch([perPage, sortBy], () => {
+watch([localPerPage, localSortBy], () => {
     emit('change', {
-        perPage: perPage.value,
-        sortBy: sortBy.value,
+        perPage: localPerPage.value,
+        sortBy: localSortBy.value,
     });
 });
 </script>

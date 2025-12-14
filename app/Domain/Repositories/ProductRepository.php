@@ -3,7 +3,7 @@
 namespace App\Domain\Repositories;
 
 use App\Domain\Dtos\PageDto;
-use App\Domain\Dtos\ProductDto;
+use App\Domain\Dtos\Products\ProductDto;
 use App\Domain\Dtos\SortDto;
 use App\Domain\Models\Category;
 use App\Domain\Models\Product;
@@ -95,6 +95,14 @@ class ProductRepository
     {
         if ($sortDto === null) {
             $sortDto = new SortDto();
+        }
+
+        if ($sortDto->sortBy == 'brand') {
+            return Product::query()
+                ->with(relations: 'brand')
+                ->leftJoin(table: 'brands', first: 'brands.id', operator: '=', second: 'products.brand_id')
+                ->orderBy(column: 'brands.name', direction: $sortDto->sortDir)
+                ->select(columns: 'products.*');
         }
 
         return Product::query()

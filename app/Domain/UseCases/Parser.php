@@ -2,7 +2,7 @@
 
 namespace App\Domain\UseCases;
 
-use App\Domain\Dtos\ProductDto;
+use App\Domain\Dtos\Products\ProductDto;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Domain\Repositories\TagRepository;
 use App\Domain\Repositories\BrandRepository;

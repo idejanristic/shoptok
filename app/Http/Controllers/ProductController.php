@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Domain\Dtos\PageDto;
 use App\Domain\Dtos\SortDto;
 use App\Domain\Repositories\ProductRepository;
+use App\Domain\Services\ProductService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,8 +43,12 @@ class ProductController extends Controller
 
     public function ajax(
         Request $request,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        ProductService $productService
     ): JsonResponse {
+
+        $sortData = $productService->formatSortByParametar(sortBy: $request->sortBy);
+
         $products = $productRepository->getProducts(
             pageDto: PageDto::apply(
                 data: [
@@ -51,10 +56,7 @@ class ProductController extends Controller
                     'page' =>  $request->page ?? 1
                 ]
             ),
-            sortDto: SortDto::apply(data: [
-                'sortBy' => 'created_at',
-                'sortDir' => 'desc'
-            ])
+            sortDto: $sortData
         );
 
         return response()

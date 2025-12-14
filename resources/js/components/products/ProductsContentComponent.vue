@@ -1,6 +1,6 @@
 <template>
     <div class="sort-area">
-        <products-sorter-component @change="reFetchData" />
+        <products-sorter-component @change="reFetchPageData" :perPage="pageData.perPage" :sortBy="pageData.sortBy" />
     </div>
 
     <div class="position-relative">
@@ -9,32 +9,38 @@
     </div>
 
     <div v-if="!loading" class="d-flex justify-content-center mt-3">
-        <pagination-component :pagination="pagination" @changePage="fetchPage" />
+        <pagination-component :pagination="pagination" @changePage="fetchPageData" />
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useStorage } from '@/composables/useStorage';
 
 const products = ref([]);
 const loading = ref(true);
 const pagination = ref(null);
-const currentPage = ref(1);
+const pageData = useStorage(
+    'tv_page_data',
+    {
+        page: 1,
+        perPage: 0,
+        sortBy: 'minPrice'
+    }
+);
 
 
-const fetchPage = async (page = 1, perPage = 0, sortBy = '') => {
-
+const fetchData = async () => {
     loading.value = true;
-    currentPage.value = page;
 
-    var queryString = `page=${page}`;
+    var queryString = `page=${pageData.value.page}`;
 
-    if (perPage > 0) {
-        queryString += `&perPage=${perPage}`
+    if (pageData.value.perPage > 0) {
+        queryString += `&perPage=${pageData.value.perPage}`
     }
 
-    if (sortBy) {
-        queryString += `&sortBy=${sortBy}`
+    if (pageData.value.sortBy) {
+        queryString += `&sortBy=${pageData.value.sortBy}`
     }
 
     try {
@@ -62,11 +68,20 @@ const fetchPage = async (page = 1, perPage = 0, sortBy = '') => {
     }
 };
 
-const reFetchData = (data) => {
-    fetchPage(currentPage.value, data.perPage, data.sortBy);
+const fetchPageData = (page = 1) => {
+    pageData.value.page = page;
+
+    fetchData();
+}
+
+const reFetchPageData = (data) => {
+    pageData.value.perPage = data.perPage;
+    pageData.value.sortBy = data.sortBy;
+    pageData.value.page = 1;
+    fetchData();
 }
 
 onMounted(() => {
-    fetchPage();
+    fetchData();
 });
 </script>
