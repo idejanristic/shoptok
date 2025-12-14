@@ -14,6 +14,19 @@
                     title="Shoptok.si"
                 >
             </a>
+
+            <div class="row">
+
+                <nav class="navbar navbar-light bg-light d-lg-none px-3">
+                    <button
+                        class="btn btn-secondary"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#mobileSidebar"
+                    >
+                        ☰
+                    </button>
+                </nav>
+            </div>
         </div>
     </div>
 </header>

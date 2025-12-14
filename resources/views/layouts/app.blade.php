@@ -22,16 +22,6 @@
     </header>
 
     <main class="container">
-        <nav class="navbar navbar-light bg-light d-lg-none px-3">
-            <button
-                class="btn btn-primary"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#mobileSidebar"
-            >
-                ☰ Filteri
-            </button>
-        </nav>
-
         <div class="row">
             <div class="col-12 d-flex">
                 <!-- Desktop Sidebar -->
