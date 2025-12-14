@@ -33,7 +33,7 @@ class ProductService
                 $sortData = SortDto::apply(
                     data: [
                         'sortBy' => 'discount',
-                        'sortDir' => 'asc'
+                        'sortDir' => 'desc'
                     ]
                 );
                 break;

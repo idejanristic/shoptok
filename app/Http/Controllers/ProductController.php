@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Dtos\PageDto;
-use App\Domain\Dtos\Products\ProductFilterDto;
 use App\Domain\Dtos\SortDto;
-use App\Domain\Repositories\BrandRepository;
-use App\Domain\Repositories\CategoryRepository;
-use App\Domain\Repositories\ProductRepository;
-use App\Domain\Repositories\TagRepository;
-use App\Domain\Services\ProductService;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse as HttpJsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use App\Domain\Services\ProductService;
+use App\Domain\Repositories\TagRepository;
+use App\Domain\Repositories\BrandRepository;
+use App\Domain\Dtos\Products\ProductFilterDto;
+use App\Domain\Repositories\ProductRepository;
+use App\Domain\Repositories\CategoryRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Illuminate\Http\JsonResponse as HttpJsonResponse;
 
 class ProductController extends Controller
 {
@@ -87,6 +87,10 @@ class ProductController extends Controller
             ->json(data: $products);
     }
 
+    /**
+     * @param int $id
+     * @return View
+     */
     public function category(
         int $id,
     ): View {
@@ -105,6 +109,13 @@ class ProductController extends Controller
         );
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @param ProductRepository $productRepository
+     * @param ProductService $productService
+     * @return HttpJsonResponse
+     */
     public function categoryAjax(
         int $id,
         Request $request,
