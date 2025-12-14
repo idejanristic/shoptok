@@ -25,7 +25,10 @@
         <div class="row">
             <div class="col-12 d-flex">
                 <!-- Desktop Sidebar -->
-                <div class="sidebar-desktop d-none d-lg-block">
+                <div
+                    class="sidebar-desktop d-none d-lg-block"
+                    id="sidebar-app"
+                >
                     @include('partials.sidebar')
                 </div>
 

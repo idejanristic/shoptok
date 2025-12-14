@@ -15,7 +15,6 @@
     <x-page-header
         title="Televizorji"
         :total="$total"
-        :shops="$shops"
         img="https://img.ep-cdn.com/i/800/345/9a/9ac2cf1b62252cat_69/televizorji-akcija.webp"
     >
         <div class="d-flex flex-wrap gap-2">
@@ -37,8 +36,10 @@
 @section('page_content')
     <div id="app">
         <products-content-component
-            url="{{ route(name: 'products.index.ajax') }}"
+            url="{{ route('products.index.ajax') }}"
             prefix="tv"
+            :brands='@json($brands)'
+            :tags='@json($tags)'
         />
     </div>
 @endsection

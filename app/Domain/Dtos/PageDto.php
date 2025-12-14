@@ -14,7 +14,7 @@ class PageDto
     public static function apply(array $data): PageDto
     {
         return new self(
-            perPage: $data['perPage'],
+            perPage: $data['perPage'] ?? 10,
             page: $data['page'] ?? 1,
             pageName: $data['pageName'] ?? 'page',
             columns: $data['columns'] ?? ['*']

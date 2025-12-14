@@ -29,28 +29,7 @@
         </div>
         <div class="filter-body">
             <div class="filter-scroll">
-                @foreach ($brands as $brand)
-                    <div class="form-check mb-3">
-                        <input
-                            type="checkbox"
-                            class="form-check-input"
-                            id="brand_{{ $brand->id }}"
-                        >
-                        <label
-                            class="form-check-label"
-                            for="brand_{{ $brand->id }}"
-                        >
-                            {{ $brand->name }}
-                            <span
-                                class="badge"
-                                style="color: red;"
-                            >
-                                {{ $brand->products_count }}
-                            </span>
-                        </label>
-                    </div>
-                @endforeach
-
+                <brand-filter-component :brands='@json($brands)' />
             </div>
         </div>
     </div>
@@ -60,15 +39,7 @@
             Tagovi
         </div>
         <div class="filter-body">
-            @foreach ($tags as $tag)
-                <button class="text-dark position-relative mb-2 ml-2 rounded border bg-white px-3 py-2">
-                    {{ $tag->name }}
-
-                    <span class="position-absolute translate-middle badge rounded-pill bg-danger start-10 top-0 z-10">
-                        {{ $tag->products_count }}
-                    </span>
-                </button>
-            @endforeach
+            <tag-filter-component :tags='@json($tags)' />
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row mb-4">
         <!-- Per page -->
         <div class="col-3 col-md-2">
             <div class="form-floating">
@@ -12,7 +12,11 @@
             </div>
         </div>
 
-        <div class="col-4 col-md-7"></div>
+        <div class="col-4 col-md-7">
+            <b>
+                {{ total }} izdelkov
+            </b>
+        </div>
 
         <!-- Sort by -->
         <div class="col-5 col-md-3">
@@ -32,6 +36,10 @@
 import { ref, watch } from 'vue';
 
 const props = defineProps({
+    total: {
+        type: Number,
+        default: 0
+    },
     perPage: {
         type: Number,
         required: true,

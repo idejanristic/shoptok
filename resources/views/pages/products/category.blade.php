@@ -19,7 +19,6 @@
     <x-page-header
         :title="$category->name"
         :total="$category->products_count"
-        :shops="$shops"
         :img="$category->image"
     >
         <div class="d-flex flex-wrap gap-2">
@@ -42,6 +41,8 @@
         <products-content-component
             url="{{ route(name: 'products.category.ajax', parameters: ['id' => $category->id]) }}"
             prefix="{{ $category->prefix ?? 'tv' }}"
+            :brands='@json($brands)'
+            :tags='@json($tags)'
         />
     </div>
 @endsection

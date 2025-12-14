@@ -10,9 +10,9 @@ class TagRepository
     /**
      * @return Collection<int, Tag>
      */
-    public static function all(): Collection
+    public static function all(?int $categoryId = null): Collection
     {
-        return self::getTagRelationQuery()->get();
+        return self::getTagRelationQuery(categoryId: $categoryId)->get();
     }
 
     /**
@@ -62,11 +62,16 @@ class TagRepository
     /**
      * @return \Illuminate\Database\Eloquent\Builder<Tag>
      */
-    private static function getTagRelationQuery()
+    private static function getTagRelationQuery(?int $categoryId = null)
     {
         return Tag::query()
             ->withCount(relations: [
-                'products'
-            ]);
+                'products as products_count' => function ($query) use ($categoryId) {
+                    if ($categoryId) {
+                        $query->where('category_id', $categoryId);
+                    }
+                }
+            ])
+            ->orderBy(column: 'products_count', direction: 'desc');
     }
 }

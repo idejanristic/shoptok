@@ -3,13 +3,15 @@
 namespace App\Domain\Repositories;
 
 use App\Domain\Dtos\PageDto;
+use App\Domain\Dtos\SortDto;
+use App\Domain\Models\Product;
+use App\Domain\Models\Category;
 use App\Domain\Dtos\Products\ProductDto;
 use App\Domain\Dtos\Products\ProductFilterDto;
-use App\Domain\Dtos\SortDto;
-use App\Domain\Models\Category;
-use App\Domain\Models\Product;
-use App\Domain\Repositories\Filters\Products\CategoryFilter;
 use Illuminate\Contracts\Pagination\Paginator;
+use App\Domain\Repositories\Filters\Products\TagFilter;
+use App\Domain\Repositories\Filters\Products\BrandFilter;
+use App\Domain\Repositories\Filters\Products\CategoryFilter;
 
 class ProductRepository
 {
@@ -78,8 +80,11 @@ class ProductRepository
      * @param mixed $sortDto
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getProducts(PageDto $pageDto, ?ProductFilterDto $filters = null, ?SortDto $sortDto = null): Paginator
-    {
+    public function getProducts(
+        PageDto $pageDto,
+        ?ProductFilterDto $filters = null,
+        ?SortDto $sortDto = null
+    ): Paginator {
         return self::getProductsQuery(filters: $filters, sortDto: $sortDto)
             ->paginate(
                 perPage: $pageDto->perPage,
@@ -95,8 +100,10 @@ class ProductRepository
      * @param mixed $sortDto
      * @return \Illuminate\Database\Eloquent\Builder<Product>
      */
-    private static function getProductsQuery(?ProductFilterDto $filters = null, ?SortDto $sortDto)
-    {
+    private static function getProductsQuery(
+        ?ProductFilterDto $filters = null,
+        ?SortDto $sortDto = null
+    ) {
         if ($filters == null) {
             $filters = new ProductFilterDto();
         }
@@ -106,8 +113,13 @@ class ProductRepository
         }
 
         $query = Product::query()
-            ->with(relations: 'brand')
-            ->tap(callback: new CategoryFilter(categoryId: $filters->categoryId));
+            ->with(relations: [
+                'brand',
+                'tags'
+            ])
+            ->tap(callback: new CategoryFilter(categoryId: $filters->categoryId))
+            ->tap(callback: new BrandFilter(brandIds: $filters->brandIds))
+            ->tap(callback: new TagFilter(tagIds: $filters->tagIds));
 
         if ($sortDto->sortBy == 'brand') {
             return $query

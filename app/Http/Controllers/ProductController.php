@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Domain\Dtos\PageDto;
 use App\Domain\Dtos\Products\ProductFilterDto;
 use App\Domain\Dtos\SortDto;
+use App\Domain\Repositories\BrandRepository;
 use App\Domain\Repositories\CategoryRepository;
 use App\Domain\Repositories\ProductRepository;
+use App\Domain\Repositories\TagRepository;
 use App\Domain\Services\ProductService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
@@ -37,12 +39,16 @@ class ProductController extends Controller
             ])
         );
 
+        $brands = BrandRepository::all();
+        $tags = TagRepository::all();
+
         return view(
             view: 'pages.products.index',
             data: [
                 'products' => $products,
                 'total' => $products->total(),
-                'shops' => 0
+                'brands' => $brands,
+                'tags' => $tags
             ]
         );
     }
@@ -68,6 +74,12 @@ class ProductController extends Controller
                     'page' =>  $request->page ?? 1
                 ]
             ),
+            filters: ProductFilterDto::apply(
+                data: [
+                    'brandIds' => $request->brands,
+                    'tagIds' => $request->tags
+                ]
+            ),
             sortDto: $sortData
         );
 
@@ -77,17 +89,18 @@ class ProductController extends Controller
 
     public function category(
         int $id,
-        Request $request,
-        ProductRepository $productRepository
     ): View {
+        $category = CategoryRepository::find(id: $id);
 
-        $category = CategoryRepository::find($id);
+        $brands = BrandRepository::all(categoryId: $category->id);
+        $tags = TagRepository::all(categoryId: $category->id);
 
         return view(
             view: 'pages.products.category',
             data: [
                 'category' => $category,
-                'shops' => 0
+                'brands' => $brands,
+                'tags' => $tags
             ]
         );
     }
@@ -110,7 +123,9 @@ class ProductController extends Controller
             ),
             filters: ProductFilterDto::apply(
                 data: [
-                    'categoryId' => $id
+                    'categoryId' => $id,
+                    'brandIds' => $request->brands,
+                    'tagIds' => $request->tags
                 ]
             ),
             sortDto: $sortData

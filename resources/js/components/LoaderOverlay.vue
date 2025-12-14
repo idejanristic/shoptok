@@ -19,7 +19,7 @@ defineProps({
     },
     size: {
         type: Number,
-        default: 48 // veličina tačkica
+        default: 48
     },
     color: {
         type: String,

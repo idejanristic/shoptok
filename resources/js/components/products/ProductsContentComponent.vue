@@ -1,10 +1,15 @@
 <template>
     <div class="sort-area">
-        <products-sorter-component @change="reFetchPageData" :perPage="pageData.perPage" :sortBy="pageData.sortBy" />
+        <products-sorter-component @change="reFetchPageData" :total="total" :perPage="pageData.perPage"
+            :sortBy="pageData.sortBy" />
     </div>
 
     <div class="position-relative">
         <loader-overlay :show="loading" :size="44" color="red" />
+
+        <products-filter-component :brands="activeBrands" :tags="activeTags" @remove-brand="onRemoveBrand"
+            @remove-tag="onRemoveTag" @clear-all="onClearAll" />
+
         <products-list-component :products="products" />
     </div>
 
@@ -14,8 +19,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useStorage } from '@/composables/useStorage';
+import { useFilterStore } from '@/stores/filterStore'
 
 const props = defineProps({
     url: {
@@ -25,10 +31,21 @@ const props = defineProps({
     prefix: {
         type: String,
         required: true
+    },
+    brands: {
+        type: Object,
+        required: true
+    },
+    tags: {
+        type: Object,
+        required: true
     }
 })
 
+const filter = useFilterStore()
+
 const products = ref([]);
+const total = ref(0);
 const loading = ref(true);
 const pagination = ref(null);
 const pageData = useStorage(
@@ -43,21 +60,18 @@ const pageData = useStorage(
 const fetchData = async () => {
     loading.value = true;
 
-    var queryString = `page=${pageData.value.page}`;
-
-    if (pageData.value.perPage > 0) {
-        queryString += `&perPage=${pageData.value.perPage}`
-    }
-
-    if (pageData.value.sortBy) {
-        queryString += `&sortBy=${pageData.value.sortBy}`
-    }
-
     try {
-        const response = await axios.get(`${props.url}?${queryString}`);
+        const response = await axios.post(props.url, {
+            page: pageData.value.page,
+            perPage: pageData.value.perPage,
+            sortBy: pageData.value.sortBy,
+            brands: filter.filterBrands,
+            tags: filter.filterTags
+        });
 
         loading.value = false;
         products.value = response.data.data;
+        total.value = response.data.total;
 
         pagination.value = {
             current_page: response.data.current_page,
@@ -66,10 +80,10 @@ const fetchData = async () => {
             total: response.data.total
         };
 
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        // window.scrollTo({
+        //     top: 0,
+        //     behavior: 'smooth'
+        // });
 
     } catch (error) {
         console.error('Failed to fetch products', error);
@@ -94,4 +108,37 @@ const reFetchPageData = (data) => {
 onMounted(() => {
     fetchData();
 });
+
+const onRemoveBrand = (id) => {
+    filter.removeBrand(id);
+}
+
+const onRemoveTag = (id) => {
+    filter.removeTag(id);
+}
+
+const onClearAll = () => {
+    filter.clearAll();
+}
+
+const activeBrands = computed(() =>
+    props.brands.filter(b =>
+        filter.filterBrands.includes(b.id)
+    )
+)
+
+const activeTags = computed(() =>
+    props.tags.filter(t =>
+        filter.filterTags.includes(t.id)
+    )
+)
+
+watch(
+    () => [filter.filterBrands, filter.filterTags],
+    () => {
+        pageData.value.page = 1
+        fetchData()
+    },
+    { deep: true, immediate: true }
+)
 </script>

@@ -10,9 +10,9 @@ class BrandRepository
     /**
      * @return Collection<int, Brand>
      */
-    public static function all(): Collection
+    public static function all(?int $categoryId = null): Collection
     {
-        return self::getBrandRelationQuery()->get();
+        return self::getBrandRelationQuery(categoryId: $categoryId)->get();
     }
 
     /**
@@ -39,11 +39,15 @@ class BrandRepository
     /**
      * @return \Illuminate\Database\Eloquent\Builder<Brand>
      */
-    private static function getBrandRelationQuery()
+    private static function getBrandRelationQuery(?int $categoryId = null)
     {
         return Brand::query()
-            ->withCount(relations: [
-                'products'
+            ->withCount([
+                'products as products_count' => function ($query) use ($categoryId) {
+                    if ($categoryId) {
+                        $query->where('category_id', $categoryId);
+                    }
+                }
             ])
             ->orderBy(column: 'products_count', direction: 'desc');
     }
