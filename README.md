@@ -18,6 +18,9 @@ This is a web application for a job competition.
 10. Run the command `sail npm run dev`
 11. Since Sail is already up, you can just visit http://localhost:8080
 
+12 Run the command `sail artisan shoptok:parser` for insert data form 'https://www.shoptok.si/'
+or `sail artisan artisan db:seed`
+
 ## License
 
 [MIT license](https://opensource.org/licenses/MIT).
