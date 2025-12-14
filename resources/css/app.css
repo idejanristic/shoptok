@@ -108,11 +108,8 @@ body {
     color: rgba(33, 37, 41);
 }
 
-.filter-body .nav-link.active {
-}
-
 .filter-body .filter-scroll {
-    max-height: 250px;
+    max-height: 230px;
     overflow-y: scroll;
 }
 

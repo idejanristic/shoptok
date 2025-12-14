@@ -2,6 +2,8 @@
 
 namespace App\Domain\Dtos\Products;
 
+use App\Domain\Dtos\TagDto;
+
 class ProductDto
 {
     public function __construct(

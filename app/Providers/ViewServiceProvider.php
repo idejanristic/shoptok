@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\View\Composer\BrandsComposer;
+use App\View\Composer\CategoriesComposer;
 use Illuminate\Support\Facades\View;
 use App\View\Composer\TagsComposer;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +31,11 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(
             views: 'layouts.*',
             callback: BrandsComposer::class
+        );
+
+        View::composer(
+            views: 'layouts.*',
+            callback: CategoriesComposer::class
         );
     }
 }

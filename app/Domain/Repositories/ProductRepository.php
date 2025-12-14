@@ -4,9 +4,11 @@ namespace App\Domain\Repositories;
 
 use App\Domain\Dtos\PageDto;
 use App\Domain\Dtos\Products\ProductDto;
+use App\Domain\Dtos\Products\ProductFilterDto;
 use App\Domain\Dtos\SortDto;
 use App\Domain\Models\Category;
 use App\Domain\Models\Product;
+use App\Domain\Repositories\Filters\Products\CategoryFilter;
 use Illuminate\Contracts\Pagination\Paginator;
 
 class ProductRepository
@@ -72,12 +74,13 @@ class ProductRepository
 
     /**
      * @param PageDto $pageDto
+     * @param mixed $filter
      * @param mixed $sortDto
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getProducts(PageDto $pageDto, ?SortDto $sortDto = null): Paginator
+    public function getProducts(PageDto $pageDto, ?ProductFilterDto $filters = null, ?SortDto $sortDto = null): Paginator
     {
-        return self::getProductsQuery(sortDto: $sortDto)
+        return self::getProductsQuery(filters: $filters, sortDto: $sortDto)
             ->paginate(
                 perPage: $pageDto->perPage,
                 columns: $pageDto->columns,
@@ -88,25 +91,32 @@ class ProductRepository
     }
 
     /**
+     * @param mixed $filter
      * @param mixed $sortDto
      * @return \Illuminate\Database\Eloquent\Builder<Product>
      */
-    private static function getProductsQuery(?SortDto $sortDto)
+    private static function getProductsQuery(?ProductFilterDto $filters = null, ?SortDto $sortDto)
     {
+        if ($filters == null) {
+            $filters = new ProductFilterDto();
+        }
+
         if ($sortDto === null) {
             $sortDto = new SortDto();
         }
 
+        $query = Product::query()
+            ->with(relations: 'brand')
+            ->tap(callback: new CategoryFilter(categoryId: $filters->categoryId));
+
         if ($sortDto->sortBy == 'brand') {
-            return Product::query()
-                ->with(relations: 'brand')
+            return $query
                 ->leftJoin(table: 'brands', first: 'brands.id', operator: '=', second: 'products.brand_id')
                 ->orderBy(column: 'brands.name', direction: $sortDto->sortDir)
                 ->select(columns: 'products.*');
         }
 
-        return Product::query()
-            ->with(relations: 'brand')
+        return $query
             ->orderBy(column: $sortDto->sortBy, direction: $sortDto->sortDir);
     }
 }

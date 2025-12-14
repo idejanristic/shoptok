@@ -17,18 +17,28 @@
 import { ref, onMounted } from 'vue';
 import { useStorage } from '@/composables/useStorage';
 
+const props = defineProps({
+    url: {
+        type: String,
+        required: true,
+    },
+    prefix: {
+        type: String,
+        required: true
+    }
+})
+
 const products = ref([]);
 const loading = ref(true);
 const pagination = ref(null);
 const pageData = useStorage(
-    'tv_page_data',
+    props.prefix + '_page_data',
     {
         page: 1,
-        perPage: 0,
+        perPage: 40,
         sortBy: 'minPrice'
     }
 );
-
 
 const fetchData = async () => {
     loading.value = true;
@@ -44,7 +54,7 @@ const fetchData = async () => {
     }
 
     try {
-        const response = await axios.get(`/products/ajax?${queryString}`);
+        const response = await axios.get(`${props.url}?${queryString}`);
 
         loading.value = false;
         products.value = response.data.data;

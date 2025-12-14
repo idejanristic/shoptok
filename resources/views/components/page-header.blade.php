@@ -1,4 +1,4 @@
-@props(['total' => 0, 'shops' => 0, 'title' => '', 'img_src' => ''])
+@props(['total' => 0, 'shops' => 0, 'title' => '', 'img' => ''])
 
 <div class="my-2">
     <div class="g-0 position-relative header-box">
@@ -13,7 +13,7 @@
         <div class="position-relative box-img-wrapper">
             <div class="box-fade"></div>
             <img
-                src="{{ $img_src }}"
+                src="{{ $img }}"
                 alt="TV"
                 class="img-fluid box-img"
             >

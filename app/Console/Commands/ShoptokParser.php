@@ -48,8 +48,20 @@ class ShoptokParser extends Command
             }
         }
 
-        Category::updateOrCreate(attributes: ['name' => 'LED TV']);
-        Category::updateOrCreate(attributes: ['name' => 'OLED TV']);
+        Category::updateOrCreate(
+            attributes: [
+                'name' => 'LED TV',
+                'prefix' => 'led',
+                'image' => 'https://img.ep-cdn.com/i/800/345/9a/9ac2cf1b62252cat_108/led-tv-akcija.webp'
+            ]
+        );
+        Category::updateOrCreate(
+            attributes: [
+                'name' => 'OLED TV',
+                'prefix' => 'oled',
+                'image' => 'https://img.ep-cdn.com/i/800/345/9a/9ac2cf1b62252cat_1791/oled-tv-akcija.webp'
+            ]
+        );
 
         $ledFiles = Storage::files(directory: 'shoptok/category/led');
 

@@ -16,6 +16,8 @@ return new class extends Migration
             callback: function (Blueprint $table) {
                 $table->id();
                 $table->string(column: 'name');
+                $table->text(column: 'image')->nullable();
+                $table->string(column: 'prefix')->nullable();
                 $table->timestamps();
             }
         );

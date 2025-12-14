@@ -44,6 +44,7 @@ class BrandRepository
         return Brand::query()
             ->withCount(relations: [
                 'products'
-            ]);
+            ])
+            ->orderBy(column: 'products_count', direction: 'desc');
     }
 }

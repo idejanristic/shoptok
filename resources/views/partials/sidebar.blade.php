@@ -1,29 +1,29 @@
 <div style="padding-right: 16px;">
-    <div class="filter-box mb-2">
+    <div class="filter-box mb-4">
         <div class="filter-title">
             Kategorije
         </div>
         <div class="filter-body">
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a
-                        class="nav-link px-0"
-                        aria-current="page"
-                        href="#"
-                    >LED TV</a>
-                </li>
-                <li class="nav-item">
-                    <a
-                        class="nav-link px-0"
-                        aria-current="page"
-                        href="#"
-                    >OLED TV</a>
-                </li>
+                @foreach ($categories as $cat)
+                    <li class="nav-item">
+                        <a
+                            class="nav-link px-0"
+                            aria-current="page"
+                            href="{{ route('products.category', ['id' => $cat->id]) }}"
+                        >{{ $cat->name }} <span
+                                class="badge"
+                                style="color: red;"
+                            >
+                                {{ $cat->products_count }}
+                            </span></a>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>
 
-    <div class="filter-box mb-2">
+    <div class="filter-box mb-4">
         <div class="filter-title">
             Proizvajalec
         </div>
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <div class="filter-box mb-2">
+    <div class="filter-box mb-4">
         <div class="filter-title">
             Tagovi
         </div>
