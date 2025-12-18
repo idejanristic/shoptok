@@ -139,6 +139,6 @@ watch(
         pageData.value.page = 1
         fetchData()
     },
-    { deep: true, immediate: true }
+    { deep: true }
 )
 </script>

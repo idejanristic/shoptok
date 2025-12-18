@@ -96,6 +96,10 @@ class ProductController extends Controller
     ): View {
         $category = CategoryRepository::find(id: $id);
 
+        if (!$category) {
+            abort(404);
+        }
+
         $brands = BrandRepository::all(categoryId: $category->id);
         $tags = TagRepository::all(categoryId: $category->id);
 
